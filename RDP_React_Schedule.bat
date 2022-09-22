@@ -1,0 +1,1 @@
+SCHTASKS /Create /RU "NT AUTHORITY\SYSTEM" /TN RDP_Attack_Reaction /TR "powershell.exe  -ExecutionPolicy Bypass -File C:\RDP_Attack_Reaction.ps1" /SC ONEVENT /EC Security /MO  "*[System[Provider[@Name='Microsoft-Windows-Security-Auditing'] and EventID=4625]]" 
