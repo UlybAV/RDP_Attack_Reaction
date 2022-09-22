@@ -1,6 +1,6 @@
 [Console]::OutputEncoding = [System.Text.Encoding]::GetEncoding("utf-8");
 
-$logsPath = "g:\RDP_Attacks";
+$logsPath = "C:\RDP_Attacks";
 $date_format = "dd.MM.yy HH:mm:ss";
 
 $maxCountFails = 8;
@@ -14,7 +14,7 @@ $eventAttack = Get-EventLog -LogName Security -newest 1 -InstanceId 4625;
 $HashAttackerIp = $eventAttack |Select @{n='IpAddress';e={$_.ReplacementStrings[-2]}};
 $ipAttacker = $HashAttackerIp.IpAddress;
 
-# Доработать исключения?
+# Г„Г®Г°Г ГЎГ®ГІГ ГІГј ГЁГ±ГЄГ«ГѕГ·ГҐГ­ГЁГї?
 if ($ipAttacker -eq '::1') { exit 0 };
 
 $logAttackerPath = $logsPath + '\' +  $ipAttacker + '\';
@@ -27,7 +27,7 @@ $HashLogWriteDate =  Get-ChildItem -Path $countFailsFile |select LastWriteTime;
 $logWriteDate = $HashLogWriteDate.LastWriteTime;
 $today = Get-Date;
 
-# Уточнить логику возможно.
+# Г“ГІГ®Г·Г­ГЁГІГј Г«Г®ГЈГЁГЄГі ГўГ®Г§Г¬Г®Г¦Г­Г®.
 $passedDays = (New-TimeSpan -Start $logWriteDate -End $today).TotalDays;
 if ($passedDays -gt $days) { Del $countFailsFile };
 
@@ -45,9 +45,9 @@ $failsFile =  $logAttackerPath + 'fails.txt';
 $loginAttacker + '   ' + $EventTime >> $failsFile;
 
 if ($count -gt $maxCountFails) {
-##### ЧУЖАЯ ЧАСТЬ #####
-# Тут можно сделать запись сразу IP атакующего, а не 1.1.1.1, но тогда дальнейший ход надо ограничить.
-    if($null -eq (Get-NetFirewallRule -DisplayName $NameRule -ErrorAction SilentlyContinue)){New-NetFirewallRule -DisplayName "$NameRule" –RemoteAddress 1.1.1.1 -Direction Inbound -Protocol TCP –LocalPort $RDPPort -Action Block};
+##### Г—Г“Г†ГЂГџ Г—ГЂГ‘Г’Гњ #####
+# Г’ГіГІ Г¬Г®Г¦Г­Г® Г±Г¤ГҐГ«Г ГІГј Г§Г ГЇГЁГ±Гј Г±Г°Г Г§Гі IP Г ГІГ ГЄГіГѕГ№ГҐГЈГ®, Г  Г­ГҐ 1.1.1.1, Г­Г® ГІГ®ГЈГ¤Г  Г¤Г Г«ГјГ­ГҐГ©ГёГЁГ© ГµГ®Г¤ Г­Г Г¤Г® Г®ГЈГ°Г Г­ГЁГ·ГЁГІГј.
+    if($null -eq (Get-NetFirewallRule -DisplayName $NameRule -ErrorAction SilentlyContinue)){New-NetFirewallRule -DisplayName "$NameRule" вЂ“RemoteAddress 1.1.1.1 -Direction Inbound -Protocol TCP вЂ“LocalPort $RDPPort -Action Block};
 
     $current_ips = (Get-NetFirewallRule -DisplayName "$NameRule" | Get-NetFirewallAddressFilter ).RemoteAddress -split(',');
     
@@ -56,7 +56,7 @@ if ($count -gt $maxCountFails) {
 #    echo $current_ips;
 
     Set-NetFirewallRule -DisplayName "$NameRule" -RemoteAddress $current_ips
-    ##### КОНЕЦ ЧУЖОЙ ЧАСТИ #####
+    ##### ГЉГЋГЌГ…Г– Г—Г“Г†ГЋГ‰ Г—ГЂГ‘Г’Г€ #####
 }
 
 exit 0
